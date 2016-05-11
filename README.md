@@ -90,8 +90,8 @@ filepath = log/containerops-log
 [db]
 driver = mysql
 uri = localhost:3306
-user = root
-passwd = 123456
+user = test
+passwd = test
 name = dockyard
 
 [dockyard]
@@ -100,13 +100,12 @@ domains = containerops.me
 registry = 0.9
 distribution = registry/2.0
 standalone = true
-driver = qiniu
+backend = rados
 
-[qiniu]
-endpoint = sample.com
-bucket = dockyard
-accessKeyID = userid
-accessKeysecret = userkey
+[rados]
+chunksize = 4196304
+poolname = test
+username = test
 ```
 
 * runmode: application run mode must be `dev` or `prod`.
@@ -114,7 +113,7 @@ accessKeysecret = userkey
 * httpscertfile: specify user own https certificate file by this parameter.
 * httpskeyfile: specify user own https key file by this parameter.
 * [log] filepath: specify where Dockyard logs are stored.
-* [db] driver: specify `mysql` or `redis` to store image context.
+* [db] driver: specify `mysql` or `redis` to store metadata.
 * [db] uri: Dockyard database provider is `mysql` or `redis`,`IP` and `Port` would be specified before database boots.
 * [db] user: optionally,specify the user to login and access when `mysql` is used.
 * [db] passwd: specify the password to login and access db.
@@ -125,9 +124,10 @@ accessKeysecret = userkey
 * [dockyard] registry: specify the version of Docker V1 protocol.
 * [dockyard] distribution: specify the version of Docker V2 protocol.
 * [dockyard] standalone: must be `true` or `false`,specify run mode whether do authorization checks or not.
+* [dockyard] backend: specify a object storage service driver,support s3,gcs,rados,aliyun,qcloud,qiniu,upyun and Dockyard OSS.
 
 #### Dockyard middleware configuration
-Specify parameters to enable Dockyard notification function. Below is an example of `config.json`:
+Specify parameters to enable Dockyard notification function, adapt to docker now. Below is an example of `config.json`:
 
 ```ini
 {
